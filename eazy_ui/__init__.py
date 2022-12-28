@@ -495,6 +495,15 @@ class Console():
         else:
             os.system("clear")
 
+    def getSuccess(text: str, _type: PrintType, margin=0, date=False):
+        _margin = ""
+        for i in range(margin):
+            _margin += " "
+        if date:
+            return _margin + f"{Colors.cyan}[{Colors.gray}{datetime.now().strftime('%H:%M:%S')}{Colors.cyan}]" + str(_type).replace("%status%", Colors.light_green + "+").replace("%text%", text)
+        else:
+            return _margin + str(_type).replace("%status%", Colors.light_green + "+").replace("%text%", text)
+
     def printSuccess(text: str, _type: PrintType, margin=0, date=False):
         _margin = ""
         for i in range(margin):
@@ -518,6 +527,21 @@ class Console():
                 print(_margin + str(_type).replace("%status%", Colors.light_red + "+").replace("%text%", Colors.light_red + text))
             else:
                 print(_margin + str(_type).replace("%status%", Colors.light_red + "+").replace("%text%", text))
+    
+    def getError(text: str, _type: PrintType, margin=0, date=False):
+        _margin = ""
+        for i in range(margin):
+            _margin += " "
+        if date:
+            if _type == PrintType.FIRST:
+                return _margin + f"{Colors.cyan}[{Colors.gray}{datetime.now().strftime('%H:%M:%S')}{Colors.cyan}]" + str(_type).replace("%status%", Colors.light_red + "+").replace("%text%", Colors.light_red + text)
+            else:
+                return _margin + f"{Colors.cyan}[{Colors.gray}{datetime.now().strftime('%H:%M:%S')}{Colors.cyan}]" + str(_type).replace("%status%", Colors.light_red + "+").replace("%text%", text)
+        else:
+            if _type == PrintType.FIRST:
+                return _margin + str(_type).replace("%status%", Colors.light_red + "+").replace("%text%", Colors.light_red + text)
+            else:
+                return _margin + str(_type).replace("%status%", Colors.light_red + "+").replace("%text%", text)
 
 class Center:
 
@@ -703,7 +727,7 @@ class RefreshingScreen:
         else:
             screenType = screenType.replace("%ln5%", Center.XCenter(f"{self.ligneColors}{self.ln5}: {self.val5}"))
         if self.screenType == RefreshingScreenType.CENTERED:
-            screenType = Center.Center(f"{self.bannerColor}{self.banner}") + screenType
+            screenType = Center.XCenter(f"{self.bannerColor}{self.banner}") + screenType
             print(screenType)
         else:
             screenType = screenType.replace("%banner%", f"{self.bannerColor}{self.banner}")
